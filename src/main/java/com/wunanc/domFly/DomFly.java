@@ -1,17 +1,44 @@
 package com.wunanc.domFly;
 
+import cn.lunadeer.dominion.api.DominionAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class DomFly extends JavaPlugin {
+import java.net.http.WebSocket;
+
+public final class DomFly extends JavaPlugin implements WebSocket.Listener {
+
+    private DominionAPI dominionAPI;
+    private Fly Fly;
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        //获取DominionAPI实例
+        if (Bukkit.getPluginManager().isPluginEnabled("Dominion")) {
+            dominionAPI = DominionAPI.getInstance();
+            this.getLogger().info("已成功挂钩到Dominion");
+        } else {
+            throw new IllegalStateException("Dominion 插件未启用!请确保已安装并启用它.");
+        }
 
+        this.Fly = new Fly(this);
+    }
+
+    private void registerCommands() {
+        Fly Fly = new Fly(this);
+        MainCommand mainCommand = new MainCommand(this, Fly);
+
+        this.getCommand("Domfly").setExecutor(mainCommand);
+        this.getCommand("Domfly").setTabCompleter(mainCommand);
+    }
+
+    public void reloadPluginConfig() {
+        this.reloadConfig();
+        getLogger().info("插件配置已重载");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+
     }
 }
