@@ -33,7 +33,7 @@ DomFly 是一个轻量级的 Minecraft 服务器插件，专为 Paper/Spigot 服
 - **Minecraft 版本**: 1.21.8 或更高
 - **服务端**: Paper / Spigot / Purpur
 - **Java 版本**: Java 21 或更高
-- **依赖插件**: 需要领地插件（如 Residence、GriefPrevention 等）
+- **依赖插件**: 需要领地插件Dominion
 
 ### 📥 安装方法
 
@@ -43,13 +43,13 @@ DomFly 是一个轻量级的 Minecraft 服务器插件，专为 Paper/Spigot 服
 2. **安装到服务器**
    ```bash
    # 将 jar 文件放入服务器的 plugins 文件夹
-   cp DomFly.jar /path/to/your/server/plugins/
+   cp DomFly.jar ./plugins/
    ```
 
 3. **重启服务器**
    ```bash
    # 重启服务器以加载插件
-   /stop  # 或使用其他重启命令
+   stop  # 或使用其他重启命令
    ```
 
 4. **配置插件**
@@ -80,11 +80,12 @@ DomFly 是一个轻量级的 Minecraft 服务器插件，专为 Paper/Spigot 服
 |---------|------|--------|
 | `domfly.use` | 允许使用基础飞行功能 | false |
 | `domfly.admin` | 允许使用管理命令（如 reload） | op |
-| `domfly.bypass` | 绕过领地检测（可在任何地方飞行） | op |
 
 ### ⚙️ 配置说明
 
 配置文件位置：`plugins/DomFly/config.yml`
+
+##暂未使用
 
 ```yaml
 # DomFly 配置文件
@@ -113,14 +114,13 @@ messages:
 #### 前置要求
 
 - JDK 21 或更高版本
-- Maven 3.6 或更高版本
-- Git
+- Dominion 任意版本插件
 
 #### 构建步骤
 
 ```bash
 # 克隆仓库
-git clone https://github.com/ColdeZhang/DomFly.git
+git clone https://github.com/wunanc/DomFly.git
 cd DomFly
 
 # 使用 Maven 构建
@@ -168,7 +168,5 @@ mvn clean package
 **Made with ❤️ by Hotguo**
 
 ⭐ 如果你喜欢这个项目，请考虑给它一个 Star！
-
-</div>
 
 </div>
