@@ -2,6 +2,7 @@ package com.wunanc.domFly;
 
 import cn.lunadeer.dominion.api.DominionAPI;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.net.http.WebSocket;
@@ -20,6 +21,9 @@ public final class DomFly extends JavaPlugin implements WebSocket.Listener {
         } else {
             throw new IllegalStateException("Dominion 插件未启用!请确保已安装并启用它.");
         }
+        saveDefaultConfig();
+        loadConfig();
+        registerCommands();
 
         this.Fly = new Fly(this);
     }
@@ -30,6 +34,11 @@ public final class DomFly extends JavaPlugin implements WebSocket.Listener {
 
         this.getCommand("Domfly").setExecutor(mainCommand);
         this.getCommand("Domfly").setTabCompleter(mainCommand);
+    }
+
+    private void loadConfig() {
+        FileConfiguration config = getConfig();
+        this.getLogger().info("配置文件已加载");
     }
 
     public void reloadPluginConfig() {
