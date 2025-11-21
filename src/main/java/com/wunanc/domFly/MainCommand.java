@@ -22,9 +22,16 @@ public class MainCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // 主命令（无参数）
+        // 主命令（无参数） - 执行飞行功能
         if (args.length == 0) {
-            CommandHelp.sendHelp1(sender);
+            // 检查发送者是否为玩家
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("§c只有玩家可以使用此命令！");
+                return true;
+            }
+
+            Player player = (Player) sender;
+            domflyListener.executeFlyCommand(player);
             return true;
         }
 
@@ -112,7 +119,7 @@ public class MainCommand implements CommandExecutor, TabCompleter {
             // 第一级补全：显示所有可用命令
             List<String> commands = new ArrayList<>();
 
-            // 所有玩家都能看到 help
+            // 所有玩家都能看到 help 和无参数命令（飞行功能）
             commands.add("help");
 
             // 只有有权限的玩家才能看到 reload 和 undomfly

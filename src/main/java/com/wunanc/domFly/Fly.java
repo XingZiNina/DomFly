@@ -4,9 +4,6 @@ import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.DominionAPI;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-public class Fly implements CommandExecutor, Listener {
+public class Fly implements Listener {
 
     private final JavaPlugin plugin;
     private final Set<UUID> flyingPlayers = new HashSet<>();
@@ -29,47 +26,37 @@ public class Fly implements CommandExecutor, Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // 检查发送者是否为玩家
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.RED + "只有玩家可以使用此命令！");
-            return true;
-        }
-
-        Player player = (Player) sender;
-
+    public void executeFlyCommand(Player player) {
+        // 原来onCommand中的逻辑，但去掉玩家检查，因为现在传入的肯定是Player
         if (player.getGameMode() == GameMode.CREATIVE) {
             player.sendMessage(ChatColor.YELLOW + "你已经是创造模式了，无需使用领地飞行！");
-            return true;
+            return;
         }
 
         if (player.getGameMode() == GameMode.SPECTATOR) {
             player.sendMessage(ChatColor.YELLOW + "你已经是旁观模式了，无需使用领地飞行！");
-            return true;
+            return;
         }
 
         // 检查玩家是否有权限
         if (!player.hasPermission("Domfly.use") || player.isOp()) {
-            player.sendMessage(ChatColor.RED + "你没有使用此命令的权限！需要VIP权限。");
-            return true;
+            player.sendMessage(ChatColor.RED + "你没有使用此命令的权限！");
+            return;
         }
 
         if (!isInOwnClaim(player)) {
             player.sendMessage(ChatColor.RED + "你只能在自己的领地内使用飞行功能！");
-            return true;
+            return;
         }
 
         // 切换飞行状态
         toggleFlight(player);
-
-        return true;
     }
 
     /**
      * 切换玩家的飞行状态
      */
-    private void toggleFlight(Player player) {
+    public void toggleFlight(Player player) {
         UUID playerId = player.getUniqueId();
 
         if (flyingPlayers.contains(playerId)) {
