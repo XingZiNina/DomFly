@@ -2,6 +2,7 @@ package com.wunanc.domFly;
 
 import cn.lunadeer.dominion.api.dtos.DominionDTO;
 import cn.lunadeer.dominion.api.DominionAPI;
+import cn.lunadeer.dominion.api.dtos.flag.Flags;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -110,6 +111,16 @@ public class Fly implements Listener {
             if (ownerUUID != null && ownerUUID.equals(player.getUniqueId())) {
                 return true;
             }
+
+            boolean hasAdmin = DominionAPI.getInstance().checkPrivilegeFlag(
+                    player.getLocation(),
+                    Flags.ADMIN,
+                    player
+            );
+            if (hasAdmin) {
+                return true;
+            }
+
             return false;
         } catch (Exception e) {
             plugin.getLogger().warning("领地检查错误: " + e.getMessage());
