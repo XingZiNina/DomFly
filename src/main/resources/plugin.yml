@@ -1,5 +1,5 @@
 name: DomFly
-version: ${version}
+version: ${project.version}
 main: com.wunanc.domFly.DomFly
 api-version: '1.21'
 authors: [ Hotguo ]

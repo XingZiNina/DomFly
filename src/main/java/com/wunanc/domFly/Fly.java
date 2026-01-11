@@ -18,11 +18,13 @@ import java.util.UUID;
 public class Fly implements Listener {
 
     private final JavaPlugin plugin;
+    private final ConfigManager configManager;
     private final Set<UUID> flyingPlayers = new HashSet<>();
     DominionAPI dominionAPI = DominionAPI.getInstance();
 
-    public Fly(JavaPlugin plugin) {
+    public Fly(JavaPlugin plugin, ConfigManager configManager) {
         this.plugin = plugin;
+        this.configManager = configManager;
         // 注册事件监听器
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -47,6 +49,11 @@ public class Fly implements Listener {
 
         if (!isInOwnClaim(player)) {
             player.sendMessage(ChatColor.RED + "你只能在自己的领地内使用飞行功能！");
+            if (configManager.isDebug()) {
+                DominionDTO dominion = dominionAPI.getDominion(player.getLocation());
+                String dominionName = dominion != null ? dominion.getName() : "无";
+                plugin.getLogger().info("玩家: " + player.getName() + " 所在领地: " + dominionName);
+            }
             return;
         }
 
@@ -161,5 +168,9 @@ public class Fly implements Listener {
         // 即使不在flyingPlayers中，也确保飞行被关闭
         player.setAllowFlight(false);
         player.setFlying(false);
+    }
+    
+    public ConfigManager getConfigManager() {
+        return configManager;
     }
 }
